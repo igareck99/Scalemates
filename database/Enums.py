@@ -9,7 +9,7 @@ class FinishTypeEnum(PythonEnum):
     VALUE1 = 'Gloss'
     VALUE2 = 'Matt'
 
-class Producer(PythonEnum):
+class ProducerEnum(PythonEnum):
     VALUE1 = 'Itelery'
     VALUE2 = 'Revell'
     VALUE3 = 'AK Interactive'

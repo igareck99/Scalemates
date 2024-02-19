@@ -4,6 +4,13 @@ from database.config import Configuration
 import os
 from database.Models import *
 
+def getAllProducers():
+    engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
+    Session = sessionmaker(bind=engine)
+    with Session() as session:
+        colors = session.query(Producer).all()
+        return colors
+
 def getAllColor():
     engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
     Session = sessionmaker(bind=engine)
@@ -11,7 +18,7 @@ def getAllColor():
         colors = session.query(Color).all()
         for color in colors:
             print(
-                f"ID: {color.id}, ProductName: {color.productName}, SeriesInfo: {color.seriesInfo}, FinishType: {color.finishType}, PaintType: {color.paintType}, Color: {color.color}")
+                f"ID: {color.id}, ProductName: {color.productName}, SeriesInfo: {color.seriesInfo}, FinishType: {color.finish_type_id}, PaintType: {color.paint_type_id}, Color: {color.color}")
 
 def createColor(model: ReceivedModel):
     engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
@@ -53,6 +60,9 @@ def createDatabase():
     session.add(PaintType(name = PaintEnum.VALUE2.value))
     session.add(FinishType(name = FinishTypeEnum.VALUE1.value))
     session.add(FinishType(name = FinishTypeEnum.VALUE2.value))
+    session.add(Producer(name=ProducerEnum.VALUE1.value))
+    session.add(Producer(name=ProducerEnum.VALUE2.value))
+    session.add(Producer(name=ProducerEnum.VALUE3.value))
     session.commit()
 
-createDatabase()
+#createDatabase()
