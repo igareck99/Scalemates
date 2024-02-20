@@ -4,6 +4,19 @@ from database.config import Configuration
 import os
 from database.Models import *
 
+def getProducerId(companyName: str):
+    engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
+    Session = sessionmaker(bind=engine)
+    with Session() as session:
+        producers = session.query(Producer).all()
+        print(producers)
+        result = []
+        # for x in producers:
+        #     if str(x.name).lower() == companyName.lower():
+        #         print('sasasasasasas')
+            # if companyName.lower() in x.name.lower():
+            #     print(f"ssadasdksd  {x}")
+
 def getAllProducers():
     engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
     Session = sessionmaker(bind=engine)
@@ -16,19 +29,21 @@ def getAllColor():
     Session = sessionmaker(bind=engine)
     with Session() as session:
         colors = session.query(Color).all()
-        for color in colors:
-            print(
-                f"ID: {color.id}, ProductName: {color.productName}, SeriesInfo: {color.seriesInfo}, FinishType: {color.finish_type_id}, PaintType: {color.paint_type_id}, Color: {color.color}")
+        return colors
 
 def createColor(model: ReceivedModel):
     engine = create_engine(Configuration.SQLALCHEMY_DATABASE_URI, echo=True)
     Session = sessionmaker(bind=engine)
     with Session() as session:
+        print(f"asklasklask  {type(model)}")
         paintType = session.query(PaintType).filter_by(name=model.paintType).first()
         finishType = session.query(FinishType).filter_by(name=model.finishType).first()
+        producer = session.query(Producer).filter_by(name=model.producer).first()
+        print(f"sklakaskas  {producer}")
         new_color = Color(
             productName=model.productName,
             seriesInfo=model.seriesInfo,
+            producer_id = producer.id,
             finish_type_id=finishType.id,
             paint_type_id=paintType.id,
             color=model.color
@@ -65,4 +80,4 @@ def createDatabase():
     session.add(Producer(name=ProducerEnum.VALUE3.value))
     session.commit()
 
-#createDatabase()
+# createDatabase()

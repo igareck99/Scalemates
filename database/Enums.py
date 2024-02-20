@@ -13,3 +13,4 @@ class ProducerEnum(PythonEnum):
     VALUE1 = 'Itelery'
     VALUE2 = 'Revell'
     VALUE3 = 'AK Interactive'
+
